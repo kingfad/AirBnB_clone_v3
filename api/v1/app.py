@@ -1,4 +1,11 @@
 #!/usr/bin/python3
+
+"""
+Module that starts an API for AirBnB_Clone
+Running on host: HBNB_API_HOST:HBNB_API_PORT
+Or 0.0.0.0:5000 if below env's is not define
+"""
+
 from flask import Flask,Blueprint
 from models import storage
 from api.v1.views import app_views
