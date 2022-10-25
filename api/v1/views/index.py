@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+This module contains route
+to check status of API
+"""
 
 from api.v1.views import app_views
 from flask import jsonify
