@@ -1,38 +1,28 @@
 #!/usr/bin/python3
-"""
-This module contains route
-to check status of API
-"""
-
-from models import storage
+"""Index module"""
 from api.v1.views import app_views
 from flask import jsonify
-from models import state
-from models.state import State
 from models.amenity import Amenity
 from models.city import City
-from models.review import Review
-from models.user import User
 from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
+from models import storage
 
-@app_views.route('/status', methods=["GET"])
-def status():
-    """
-        API status
-    """
+
+@app_views.route('/status', strict_slashes=False)
+def index():
+    """index page"""
     return jsonify({"status": "OK"})
 
-@app_views.route('/stats', methods=["GET"])
+
+@app_views.route('/stats', strict_slashes=False)
 def stats():
-    """
-        API stats
-    """
-    stats = {
-        "amenities": storage.count(Amenity),
-        "cities": storage.count(City),
-        "places": storage.count(Place),
-        "reviews": storage.count(Review),
-        "states": storage.count(State),
-        "users": storage.count(User)
-    }
-    return jsonify(stats)
+    """Count the number of instances for every classes"""
+    return jsonify({'amenities': storage.count(Amenity),
+                    'cities': storage.count(City),
+                    'places': storage.count(Place),
+                    'reviews': storage.count(Review),
+                    'states': storage.count(State),
+                    'users': storage.count(User)})
