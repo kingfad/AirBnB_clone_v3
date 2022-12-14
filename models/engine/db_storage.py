@@ -16,6 +16,7 @@ import sqlalchemy
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
 
+
 classes = {"Amenity": Amenity, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
 
@@ -38,7 +39,7 @@ class DBStorage:
                                              HBNB_MYSQL_HOST,
                                              HBNB_MYSQL_DB))
         if HBNB_ENV == "test":
-            Base.metadata.drop_all(self.__engine)
+            Base.metadata.drop_all(bind=self.__engine)
 
     def all(self, cls=None):
         """query on the current database session"""
@@ -76,6 +77,7 @@ class DBStorage:
         self.__session.remove()
 
     def get(self, cls, id):
+<<<<<<< HEAD
         """Method to retrieve one object"""
         objects_dict = self.all(cls)
         for value in objects_dict.values():
@@ -87,3 +89,19 @@ class DBStorage:
         """Method to count the number of objects in storage"""
         objects_dict = self.all(cls).values()
         return len(objects_dict)
+=======
+        """Get the object with a specific id"""
+        objs = self.all(cls)
+        for obj in objs.values():
+            if obj.id == id:
+                return obj
+        return None
+
+    def count(self, cls=None):
+        """Count the number of instances of a class or the number of classes"""
+        if cls is None:
+            list_classes = models.storage.all().values()
+        else:
+            list_classes = models.storage.all(cls).values()
+        return len(list_classes)
+>>>>>>> 3ea81942a4d2a6d6f1885268a6a61619f36b27ae

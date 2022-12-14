@@ -4,6 +4,7 @@ Contains the FileStorage class
 """
 
 import json
+import models
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
@@ -11,6 +12,7 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
+
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -70,6 +72,7 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
+<<<<<<< HEAD
         """Method to retrieve one object"""
         objects_dict = self.all(cls)
         for value in objects_dict.values():
@@ -81,3 +84,19 @@ class FileStorage:
         """Method to count the number of objects in storage"""
         objects_dict = self.all(cls).values()
         return len(objects_dict)
+=======
+        """Get the object with a specific id"""
+        objs = self.all(cls)
+        for obj in objs.values():
+            if obj.id == id:
+                return obj
+        return None
+
+    def count(self, cls=None):
+        """Count the number of instances of a class or the number of classes"""
+        if cls is None:
+            list_classes = models.storage.all().values()
+        else:
+            list_classes = models.storage.all(cls).values()
+        return len(list_classes)
+>>>>>>> 3ea81942a4d2a6d6f1885268a6a61619f36b27ae
