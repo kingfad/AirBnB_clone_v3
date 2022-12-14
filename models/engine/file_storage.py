@@ -4,7 +4,6 @@ Contains the FileStorage class
 """
 
 import json
-import models
 from models.amenity import Amenity
 from models.base_model import BaseModel
 from models.city import City
@@ -12,7 +11,6 @@ from models.place import Place
 from models.review import Review
 from models.state import State
 from models.user import User
-
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
            "Place": Place, "Review": Review, "State": State, "User": User}
@@ -57,7 +55,7 @@ class FileStorage:
                 jo = json.load(f)
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
-        except Exception:
+        except:
             pass
 
     def delete(self, obj=None):
@@ -72,31 +70,31 @@ class FileStorage:
         self.reload()
 
     def get(self, cls, id):
-<<<<<<< HEAD
-        """Method to retrieve one object"""
-        objects_dict = self.all(cls)
-        for value in objects_dict.values():
-            if value.id == id:
+        """
+        Returns the object based on the class name and its ID, or
+        None if not found
+        """
+        if cls not in classes.values():
+            return None
+
+        all_cls = models.storage.all(cls)
+        for value in all_cls.values():
+            if (value.id == id):
                 return value
+
         return None
 
     def count(self, cls=None):
-        """Method to count the number of objects in storage"""
-        objects_dict = self.all(cls).values()
-        return len(objects_dict)
-=======
-        """Get the object with a specific id"""
-        objs = self.all(cls)
-        for obj in objs.values():
-            if obj.id == id:
-                return obj
-        return None
+        """
+        count the number of objects in storage
+        """
+        all_class = classes.values()
 
-    def count(self, cls=None):
-        """Count the number of instances of a class or the number of classes"""
-        if cls is None:
-            list_classes = models.storage.all().values()
+        if not cls:
+            count = 0
+            for clas in all_class:
+                count += len(models.storage.all(clas).values())
         else:
-            list_classes = models.storage.all(cls).values()
-        return len(list_classes)
->>>>>>> 3ea81942a4d2a6d6f1885268a6a61619f36b27ae
+            count = len(models.storage.all(cls).values())
+
+        return count
